@@ -15,34 +15,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import unam.diplomado.pixupih.discoservice.domain.Artista;
-import unam.diplomado.pixupih.discoservice.repository.ArtistaRepository;
-import unam.diplomado.pixupih.discoservice.service.ArtistaService;
+import unam.diplomado.pixupih.discoservice.domain.Disquera;
+import unam.diplomado.pixupih.discoservice.repository.DisqueraRepository;
+import unam.diplomado.pixupih.discoservice.service.DisqueraService;
 
 @RestController
-@RequestMapping(path = "artistas")
-public class ArtistaController implements ArtistaApi {
-	
+@RequestMapping(path = "disqueras")
+public class DisqueraController implements DisqueraApi{
+
 	@Autowired
-	private ArtistaRepository artistaDataManager;
+	private DisqueraRepository disqueraManager;
 	@Autowired
-	private ArtistaService aService;
+	private DisqueraService disqueraService;
 	
 	/***************** Mètodos GET *****************/
 	
 	@GetMapping
-	public Iterable<Artista> obtenerArtistas(){
-		return artistaDataManager.findAll();
+	public Iterable<Disquera> obtenerDisqueras(){
+		return disqueraManager.findAll();
 	}
 	
 	//
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Artista> obtenerArtistaById(@PathVariable("id") String id){
+	public ResponseEntity<Disquera> obtenerDisqueraById(@PathVariable("id") String id){
 		
-		Optional<Artista> porID = artistaDataManager.findById(id);
-		if(porID.isPresent()) {
-			return new ResponseEntity<Artista>(porID.get(), HttpStatus.OK);
+		Optional<Disquera> existe = disqueraManager.findById(id);
+		if(existe.isPresent()) {
+			return new ResponseEntity<Disquera>(existe.get(), HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -53,21 +53,21 @@ public class ArtistaController implements ArtistaApi {
 	
 	@PostMapping(consumes = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Artista crearArtista(@RequestBody Artista nuevo) {
-		Artista saved = artistaDataManager.save(nuevo);
+	public Disquera crearDisquera(@RequestBody Disquera nuevo) {
+		Disquera saved = disqueraManager.save(nuevo);
 		return saved;
 	}
 	
 	/***************** Mètodos PUT *****************/
 	
 	@PutMapping(path = "{id}", consumes = "application/json")
-	public ResponseEntity<Artista> actualizarArtista(@PathVariable("id") String id, @RequestBody Artista nuevo) {
+	public ResponseEntity<Disquera> actualizaDisquera(@PathVariable("id") String id, @RequestBody Disquera nueva) {
 		
-		Artista actualizado = aService.actualizarArtista(id, nuevo);
+		Disquera actualizada = disqueraService.actualizarDisquera(id, nueva);
 		
-		if(actualizado != null) {
+		if(actualizada != null) {
 			
-			return new ResponseEntity<Artista>(actualizado, HttpStatus.OK);
+			return new ResponseEntity<Disquera>(actualizada, HttpStatus.OK);
 			
 		}
 		
@@ -79,9 +79,9 @@ public class ArtistaController implements ArtistaApi {
 	
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void borrarArtistaPorId(@PathVariable("id") String id){
+	public void borrarDisqueraPorId(@PathVariable("id") String id){
 		
-		artistaDataManager.deleteById(id);
+		disqueraManager.deleteById(id);
 		
 	}
 
