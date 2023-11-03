@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pixup-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: disco-app
+  template:
+    metadata:
+      labels:
+        app: disco-app
+    spec:
+      containers:
+      - name: pixup-disco
+        image: pxrsival/disco-service-k8s:v1
+        ports:
+        - containerPort: 8083

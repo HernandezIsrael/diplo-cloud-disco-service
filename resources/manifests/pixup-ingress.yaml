@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pixup-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: k8s.nuup.ninja
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: pixup-service # SERVICIO AL QUE SE DIRIGIRÁ EL TRÁFICO
+                port:
+                  number: 8083 # PUERTO DEL SERVICIO AL QUE SE DIRIGIRÁ EL TRÁFICO
