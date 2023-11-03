@@ -1,0 +1,218 @@
+openapi: 3.0.1
+info:
+  title: Pixup DISCO Microservice Endpoints
+  description: Definición de los Endpoints de DISCO Service para el sistema Pixup
+  contact:
+    name: UNAM - Josuè Israel Hernàndez Balcòn
+    url: https://www.unam.mx/
+    email: israel.hernandez@unam.mx
+  version: v1
+servers:
+- url: http://localhost:8083/api
+  description: Generated server url
+tags:
+- name: Disquera
+  description: API del recurso Disquera
+- name: artista
+  description: API del recurso Artista
+paths:
+  /disqueras/{id}:
+    get:
+      tags:
+      - Disquera
+      summary: Obtiene una disquera a travès de un ID
+      operationId: obtenerDisqueraById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Se ha completado la acciòn correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disquera'
+        "404":
+          description: No existe Disquera con el ID proporcionado.
+    put:
+      tags:
+      - Disquera
+      summary: Actualiza el nombre de una Disquera con el ID especificado en el PATH.
+      operationId: actualizaDisquera
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Disquera'
+        required: true
+      responses:
+        "200":
+          description: Se ha actualizado la informaciòn correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disquera'
+        "404":
+          description: No se encontrò Disquera con el ID especificado.
+    delete:
+      tags:
+      - Disquera
+      summary: Elimina la Disquera con el ID especificado en el PATH.
+      operationId: borrarDisqueraPorId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Operaciòn de borrado completada (No valida la existencia).
+  /artistas/{id}:
+    get:
+      tags:
+      - artista
+      summary: Devuelve el artista asociado al ID indicado en el PATH.
+      operationId: obtenerArtistaById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: No existe un Artista con el ID proporcionado.
+        "200":
+          description: Se ha completado la acciòn correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artista'
+    put:
+      tags:
+      - artista
+      summary: Actualiza el nombre del Artista con el ID especificado en el PATH.
+      operationId: actualizarArtista
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artista'
+        required: true
+      responses:
+        "404":
+          description: No se encontrò un Artista con el ID especificado.
+        "200":
+          description: Se ha actualizado la informaciòn correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artista'
+    delete:
+      tags:
+      - artista
+      summary: Elimina al Artista con el ID especificado en el PATH.
+      operationId: borrarArtistaPorId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Operaciòn de borrado completada (No valida la existencia).
+  /disqueras:
+    get:
+      tags:
+      - Disquera
+      summary: Obtiene el listado completo de Disqueras
+      operationId: obtenerDisqueras
+      responses:
+        "200":
+          description: Se ha completado la operaciòn con èxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disquera'
+    post:
+      tags:
+      - Disquera
+      summary: Crear Disquera especificando ùnicamente su nombre
+      operationId: crearDisquera
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Disquera'
+        required: true
+      responses:
+        "201":
+          description: Disquera creada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disquera'
+  /artistas:
+    get:
+      tags:
+      - artista
+      summary: Obtiene el listado completo de Artistas
+      operationId: obtenerArtistas
+      responses:
+        "200":
+          description: Se ha completado la operaciòn con èxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artista'
+    post:
+      tags:
+      - artista
+      summary: Agregar Artista especificando ùnicamente su nombre
+      operationId: crearArtista
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artista'
+        required: true
+      responses:
+        "201":
+          description: Artista creado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artista'
+components:
+  schemas:
+    Disquera:
+      type: object
+      properties:
+        id:
+          type: string
+        nombre:
+          type: string
+    Artista:
+      type: object
+      properties:
+        id:
+          type: string
+        nombre:
+          type: string
