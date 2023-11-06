@@ -1,223 +1,138 @@
 # Pixup DISCO Microservice Endpoints
 
-## Contenido
-
-1. Introducción
-2. Version
-3. Recursos API
-   - Disquera (Nuevo)
-   - Artista
-4. Ejecutar Localmente
-5. Información de Contacto
-
-## Introducción
-
 Este repositorio contiene la definición de los Endpoints de "Disco Service" para los siguientes dominios del sistema Pixup:
 - Disquera (Nuevo)
 - Artista
 
-## Version
+### Version
 
 - Versión actual: v2
 
-## Recursos API
+# Recursos Docker 🐳
 
-Estos microservicios se encontrarán expuestos a través del puerto `:8083`.
+La aplicación PIXUP hace uso de las siguientes imágenes.
 
-### Disquera
+### MongoDB
 
-```json
-{
-    "id": "",
-    "nombre": ""
-}
+- [Mongodb 4.2.24](https://hub.docker.com/layers/library/mongo/4.2.24/images/sha256-e43605102083aca04677b02446d9289ef495b0e97251d298c9840abe1f0256a1?context=explore)
+- [Dockerfile](https://github.com/HernandezIsrael/diplo-cloud-disco-service/blob/main/mongo.Dockerfile)
+- [init-mongo.js](https://github.com/HernandezIsrael/diplo-cloud-disco-service/blob/main/resources/db/mongo/init-mongo.js)
+- Ver imagen personalizada en [Dockerhub](https://hub.docker.com/r/pxrsival/mongo-disco-img)
+- Si se desea utilizar una BD sin inicializar, ELIMINAR la siguiente línea del Dockerfile (o modifica el init-mongo.js con la información deseada).
+
+```Dockerfile
+COPY init-mongo.js /docker-entrypoint-initdb.d/
 ```
 
-### POST
-- **Descripción:** Agrega una Disquera.
-- **Método HTTP:**
-  - `POST`
-- **Ruta:**
-  - `/disqueras`
-- **Parámetros:**
-  - `nombre` (json, string, requerido)
-- **Cuerpo de la solicitud:**
-  - `application/json`
-- **Respuestas:**
-  - `Código 200`: Se ha actualizado la información correctamente.
-  - `Código 404`: No se encontró registro con el ID especificado.
+### Maven
 
-Ejecuta el siguiente comando `curl` para validar el despliegue del servicio:
+- [maven:3.8.4-openjdk-17](https://hub.docker.com/layers/library/maven/3.8.4-openjdk-17/images/sha256-d07c45c45755f0f90b779bad869467e602f1bfff4d0b5eb1ff73f2882bc38187?context=explore)
+- [Dockerfile](https://github.com/HernandezIsrael/diplo-cloud-disco-service/blob/main/maven.Dockerfile)
+- No olvides modificar las ```ENVIRONMENT_VARIABLES``` de acuerdo a tus configuraciones.
 
-```bash
-curl -X 'POST' \
-  'http://localhost:8083/api/disqueras' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-       "nombre": "+MasNescafe"
-      }' 
-```
+# Recursos Kubernetes ☸️
 
-La respuesta será algo como:
+### Mongodb
 
-```json
-{
-    "id": "651f5b18a379fd208eb858c3",
-    "nombre": "+MasNescafe"
-}
-```
+- [deployment.yaml](https://github.com/HernandezIsrael/diplo-cloud-disco-service/blob/main/resources/manifests/mongo-deployment.yaml)
+- [service.yaml](https://github.com/HernandezIsrael/diplo-cloud-disco-service/blob/main/resources/manifests/mongo-service.yaml)
+  
+### PIXUP (Java App)
 
-### GET
+- [deployment.yaml](https://github.com/HernandezIsrael/diplo-cloud-disco-service/blob/main/resources/manifests/pixup-deployment.yaml)
+- [service.yaml](https://github.com/HernandezIsrael/diplo-cloud-disco-service/blob/main/resources/manifests/pixup-service.yaml)
+- [ingress.yaml](https://github.com/HernandezIsrael/diplo-cloud-disco-service/blob/main/resources/manifests/pixup-ingress.yaml)
 
 
-- **Descripción:** Obtiene el listado completo de Disqueras.
-- **Método HTTP:**
-  - `GET`
-- **Ruta:**
-  - `/disqueras`
-- **Respuestas:**
-  - `Código 200`: Se ha completado la operación con éxito.
+# Recursos API para DISQUERA 💽
 
-Ejecuta el siguiente comando `curl` para validar el despliegue del servicio:
-
-```bash
-curl -X 'GET' \
-  'http://localhost:8083/api/disqueras' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-```
-
-La respuesta será algo como:
+**DISQUERA** tiene la siguiente estructura:
 
 ```json
 [
     {
-        "id": "651f1280706d262e1c58668a",
-        "nombre": "+MasLabel"
-    },
-    {
-        "id": "651f13c8706d262e1c58668b",
-        "nombre": "Sector"
-    },
-    {
-        "id": "651f13d7706d262e1c58668c",
-        "nombre": "Sony Music"
-    },
-    {
-        "id": "651f1409706d262e1c58668d",
-        "nombre": "Spinnin' Records"
-    },
-    {
-        "id": "651f143a706d262e1c58668e",
-        "nombre": "+Nescafe"
-    },
-    {
-        "id": "651f145d706d262e1c586690",
-        "nombre": "Epic Records"
-    },
-    {
-        "id": "651f1470706d262e1c586691",
-        "nombre": "+Mas"
+        "id": "00000000000000000000000000",
+        "nombre": "VALOR"
     }
 ]
 ```
 
-### GET {id}
-
-- **Descripción:** Obtiene una Disquera a través de un ID.
-- **Método HTTP:**
-  - `GET`
-- **Ruta:**
-  - `/disqueras/{id}`
-- **Parámetros:**
-  - `id` (en la ruta, requerido)
-- **Respuestas:**
-  - `Código 200`: Se ha actualizado la información correctamente.
-  - `Código 404`: No se encontró registro con el ID especificado.
-
-Ejecuta el siguiente comando `curl` para validar el despliegue del servicio:
-
-```bash
-curl -X 'GET' \
-  'http://localhost:8083/api/disqueras/651f1280706d262e1c58668a' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-```
-
-La respuesta será algo como:
+La estructura del `JSON` para los métodos HTTP que lo requieran se ve algo así.
 
 ```json
 {
-    "id": "651f1280706d262e1c58668a",
-    "nombre": "+MasLabel"
+   "nombre": "VALOR"
 }
 ```
 
-### PUT {id}
+| Método | Acción      | Ruta | Parámetros vía JSON | Respuestas |
+| :----- | :---------- | :--- | :--------- | :--------- |
+| `POST` | Crea una Disquera | `/disqueras` | `nombre` | `201 [CREATED]` - Se agregó correctamente. |
+| `GET` | Obtiene el listado completo de Disqueras | `/disqueras` | N/A | `200 [OK]` - Se ha completado la acción correctamente. |
+| `GET` | Obtiene la disquera con el `id` especificado | `/disqueras/{id}` | N/A | `200 [OK]` - Se ha completado la acción correctamente.<br><br>`404 [NOT FOUND]` - No existe una Disquera con el ID proporcionado. |
+| `PUT` | Actualiza el `nombre` de la Disquera con el `id` especificado en el Path | `/disqueras/{id}` | `nombre` | `200 [OK]` - Se ha completado la acción correctamente.<br><br>`404 [NOT FOUND]` - No existe una Disquera con el ID proporcionado. |
+| `DELETE` | Elimina la disquera con el `id` especificado | `/disqueras/{id}` | N/A | `204 [NO CONTENT]` - Se ha completado la acción correctamente (No valida la existencia). |
 
-- **Descripción:** Actualiza el nombre de la Disquera con el ID especificado en el PATH.
-- **Método HTTP:**
-  - `PUT`
-- **Ruta:**
-  - `/disqueras/{id}`
-- **Parámetros:**
-  - `id` (en la ruta, `string`, requerido)
-  - `nombre` (json, `string` requerido)
-- **Cuerpo de la solicitud:**
-  - `application/json`
-- **Respuestas:**
-  - `Código 200`: Se ha actualizado la información correctamente.
-  - `Código 404`: No se encontró registro con el ID especificado.
- 
-Ejecuta el siguiente comando `curl` para validar el despliegue del servicio:
+### TEST
+
+Los microservicios se encuentran expuestos a través de un puerto. Para esta demostración se utilizó `localhost` y el puerto `:8083`.
+Utiliza Postman o ejecuta un comando `curl` para validar el despliegue del servicio utilizado cualquiera de los métoddos HTTP descritos en la tabla:
 
 ```bash
-curl -X 'PUT' \
-  'http://localhost:8083/api/disqueras/651f13c8706d262e1c58668b' \
+curl -X 'MÉTODO_HTTP' \
+  'http://localhost:8083/api/disqueras' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-    "nombre": "Sector"
-  }' 
+       "nombre": "VALOR"
+      }' 
 ```
 
-La respuesta será algo como:
+# Recursos API para ARTISTA 🎤
+
+**ARTISTA** tiene la siguiente estructura:
+
+```json
+[
+    {
+        "id": "00000000000000000000000000",
+        "nombre": "VALOR"
+    }
+]
+```
+
+La estructura del `JSON` para los métodos HTTP que lo requieran se ve algo así.
 
 ```json
 {
-    "id": "651f13c8706d262e1c58668b",
-    "nombre": "Sector"
+   "nombre": "VALOR"
 }
 ```
 
-### DELETE {id}
-- **Descripción:** Eliminar una Disquera por ID
-- **Método HTTP:**
-  - `DELETE`
-- **Ruta:**
-  - `/disqueras/{id}`
-- **Parámetros:**
-  - `id` (en la ruta, requerido)
-- **Respuestas:**
-  - `Código 204`: Operación de borrado completada (No valida la existencia).
+> Lista de métodos implementados.
 
-Ejecuta el siguiente comando `curl` para validar el despliegue del servicio:
+| Método | Acción      | Ruta | Parámetros vía JSON | Respuestas |
+| :----- | :---------- | :--- | :--------- | :--------- |
+| `POST` | Crea un Artista | `/artistas` | `nombre` | `201 [CREATED]` - Se agregó correctamente. |
+| `GET` | Obtiene el listado completo de Artistas | `/artistas` | N/A | `200 [OK]` - Se ha completado la acción correctamente. |
+| `GET` | Obtiene al Artista con el `id` especificado | `/artistas/{id}` | N/A | `200 [OK]` - Se ha completado la acción correctamente.<br><br>`404 [NOT FOUND]` - No existe un Artista con el ID proporcionado. |
+| `PUT` | Actualiza el `nombre` del Artista con el `id` especificado en el Path | `/artistas/{id}` | `nombre` | `200 [OK]` - Se ha completado la acción correctamente .<br><br>`404 [NOT FOUND]` - No existe un Artista con el ID proporcionado. |
+| `DELETE` | Elimina al Artista con el `id` especificado | `/artistas/{id}` | N/A | `204 [NO CONTENT]` - Se ha completado la acción correctamente (No valida la existencia). |
+
+### TEST
+
+Los microservicios se encuentran expuestos a través de un puerto. Para esta demostración se utilizó `localhost` y el puerto `:8083`.
+Utiliza Postman o ejecuta un comando `curl` para validar el despliegue del servicio utilizado cualquiera de los métoddos HTTP descritos en la tabla:
 
 ```bash
-curl -X 'DELETE' \
-  'http://localhost:8083/api/disqueras/651f1454706d262e1c58668f' \
+curl -X 'MÉTODO_HTTP' \
+  'http://localhost:8083/api/artistas' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
+  -d '{
+       "nombre": "VALOR"
+      }' 
 ```
-
-La respuesta será algo como:
-
-```php
-HttpStatus: 204 - No Content
-```
-
-## Artista
 
 ### Artista
 
