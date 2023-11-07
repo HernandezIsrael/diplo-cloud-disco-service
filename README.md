@@ -8,7 +8,7 @@ Este repositorio contiene la definición de los Endpoints de "Disco Service". Co
 
 ### Contenido
 
-- [Happy Path](#Happy-Path-🥳)
+- [Happy Path](#Happy-Path-)
 - Prepara tu área de trabajo
 - Recursos Docker
 - Recursos Kubernetes
