@@ -8,15 +8,15 @@ Este repositorio contiene la definición de los Endpoints de "Disco Service". Co
 
 ### Contenido
 
-- [Happy Path](#Happy-Path-)
-- [Prepara tu área de trabajo](#Prepara-tu-área-de-trabajo-)
-- [Recursos Docker](#Recursos-Docker-)
-- [Recursos Kubernetes](#Recursos-Kubernetes-)
-- [Aplica los recursos de Kubernetes](#Aplica-los-recursos-de-Kubernetes-)
-- [It Works!](#It-Works!-)
-- [Recursos API para DISQUERA](#Recursos-API-para-DISQUERA-)
-- [Recursos API para ARTISTA](#Recursos-API-para-ARTISTA-)
-- [Información de Contacto](#Información-de-Contacto-)
+- [Happy Path](#happy-path-)
+- [Prepara tu área de trabajo](#prepara-tu-área-de-trabajo-️)
+- [Recursos Docker](#recursos-docker-)
+- [Recursos Kubernetes](#recursos-kubernetes-️)
+- [Aplica los recursos de Kubernetes](#aplica-los-recursos-de-kubernetes-️)
+- [It Works!](#it-works-)
+- [Recursos API para DISQUERA](#recursos-api-para-disquera-)
+- [Recursos API para ARTISTA](#recursos-api-para-artista-)
+- [Información de Contacto](#información-de-contacto)
 
 ### Version
 
