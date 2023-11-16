@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pixup-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: disco-app
+  template:
+    metadata:
+      labels:
+        app: disco-app
+    spec:
+      containers:
+      - name: pixup-disco
+        image: pxrsival/disco-service-k8s:v1
+        ports:
+        - containerPort: 8083
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pixup-service
+spec:
+  selector:
+    app: disco-app
+  ports:
+    - protocol: TCP
+      port: 8083 # PUERTO POR EL QUE EL SERVICIO VA A ESTAR ESCUCHANDO
+      targetPort: 8083 # PUERTO AL QUE SE VA A DIRIGIR EL TRÁFICO QUE ENTRA POR "PORT"
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pixup-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: k8s.nuup.ninja
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: pixup-service # SERVICIO AL QUE SE DIRIGIRÁ EL TRÁFICO
+                port:
+                  number: 8083 # PUERTO DEL SERVICIO AL QUE SE DIRIGIRÁ EL TRÁFICO
