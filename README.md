@@ -1,7 +1,8 @@
 # 🚨 Aviso de cambio de repositorio
 
 ```diff
-- Tal y se mencionó en el Foro destinado a epecificar la URL de nuestro proyecto, hago la aclaración aquí también de que se ha actualizado el repositorio y con ello el enlace al mismo.
+- Tal y se mencionó en el Foro destinado a epecificar la URL de nuestro proyecto,
+- hago la aclaración aquí también de que se ha actualizado el repositorio y con ello el enlace al mismo.
 - El nuevo repositorio puede encontrarse en el siguiente enlace:
 
 - https://github.com/HernandezIsrael/tacos-feos
